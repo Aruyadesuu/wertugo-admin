@@ -1,41 +1,117 @@
 @extends('layouts.app')
 @section('title', 'Daftar User')
-
+@section('header', 'Manajemen User')
 @section('admin-content')
 
-<div class="container">
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th>Profil</th>
-                <th>Username</th>
-                <th>Email</th>
-                <th>Country</th>
-                <th>Role</th>
-                <th>Created At</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse($users as $index => $user)
-            <tr>
-                <td>{{ $user['foto_profil'] }}</td>
-                <td>{{ $user['username'] }}</td>
-                <td>{{ $user['email'] }}</td>
-                <td>{{ $user['country'] }}</td>
-                <td>{{ $user['role'] }}</td>
-                <td>{{ $user['created_at'] }}</td>
-            </tr>
-            @empty
-            <tr>
-                <td colspan="6">Belum ada data user.</td>
-            </tr>
-            @endforelse
-        </tbody>
-        
+
+<div class="container p-3">
+    <x-data-table
+    title="Daftar User"
+    :data="$users"
+    :headers="$tableHeaders"
+    :addButton="false"
+    :exportButton="false"
+    :filterOptions="[]">
+
+    @forelse ($users as $index => $user)
+        <tr>
+            <td>
+                <div class="d-flex align-items-center gap-3">
+                    
+                    <img src="{{ $user['foto_profil'] === 'default-profile.png' ? asset('images/default-profile.png') : env('WERTUGO_API') . '/storage/profiles/' . $user['foto_profil'] }}" 
+                        alt="Profile" 
+                        class="rounded-circle border border-light" 
+                        style="width: 40px; height: 40px; object-fit: cover;">
+
+                    <div class="d-flex flex-column lh-sm">
+                        
+                        <span class="fw-semibold text-dark" style="font-size: 14px;">
+                            {{ $user['username'] }}
+                        </span>
+                        
+                        <small class="text-muted" style="font-size: 12px;">
+                            {{ $user['email'] }}
+                        </small>
+
+                    </div>
+                </div>
+            </td>
+            <td>
+                {{ $user['role'] }}
+            </td>
+
+            <td>
+                <span class="{{ $user['account_status'] === 'active' ? 'badge text-bg-success' : 'badge text-bg-danger'}}">{{ $user['account_status'] ?? 'Active' }}</span>
+            </td>
+
+            <td>
+                {{ $user['created_at'] }}
+            </td>
+
+            <td>
+                <a class="btn btn-outline-success">
+                    <i class="bi bi-eye"></i>
+                </a>
+                <a class="btn btn-outline-danger">
+                    <i class="bi bi-trash"></i>
+                </a>
+            </td>
+        </tr>
+        @empty
+        <tr>
+            <td colspan="6">Belum ada data user.</td>
+        </tr>
+    @endforelse
+    <x-slot name="footer">
+        {{-- TAMBAHAN: flex-column (untuk HP) dan flex-md-row (untuk Laptop), serta gap-3 biar ada jarak saat numpuk --}}
+        <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-center bg-light gap-3" 
+             style="width: calc(100% + 40px); margin: 0 -20px -20px -20px; padding: 15px 20px; border-top: 1px solid #dee2e6; border-radius: 0 0 12px 12px;">
+            
+            {{-- TAMBAHAN: text-center di HP, text-md-start di Laptop --}}
+            <p class="pagination-info mb-0 text-muted text-center text-md-start">
+                Menampilkan <strong>{{ $users->firstItem() ?? 0 }} - {{ $users->lastItem() ?? 0 }}</strong> dari <strong>{{ $users->total() }}</strong> user
+            </p>
+            
+            <nav>
+                <ul class="custom-pagination mb-0 justify-content-center flex-wrap">
+                    
+                    {{-- Tombol Previous --}}
+                    @if ($users->onFirstPage())
+                        <li class="page-item disabled">
+                            <span class="page-link"><i class="bi bi-chevron-left"></i></span>
+                        </li>
+                    @else
+                        <li class="page-item">
+                            <a class="page-link" href="{{ $users->previousPageUrl() }}"><i class="bi bi-chevron-left"></i></a>
+                        </li>
+                    @endif
+
+                    {{-- Deretan Angka Halaman --}}
+                    @foreach ($users->getUrlRange(1, $users->lastPage()) as $page => $url)
+                        <li class="page-item {{ $page == $users->currentPage() ? 'active' : '' }}">
+                            <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                        </li>
+                    @endforeach
+
+                    {{-- Tombol Next --}}
+                    @if ($users->hasMorePages())
+                        <li class="page-item">
+                            <a class="page-link" href="{{ $users->nextPageUrl() }}"><i class="bi bi-chevron-right"></i></a>
+                        </li>
+                    @else
+                        <li class="page-item disabled">
+                            <span class="page-link"><i class="bi bi-chevron-right"></i></span>
+                        </li>
+                    @endif
+                    
+                </ul>
+            </nav>
+            
+        </div>
+    </x-slot>
+</x-data-table>
 
 
-
-    </table>
 
 </div>
 

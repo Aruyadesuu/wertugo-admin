@@ -639,53 +639,64 @@ body {
 }
 
 /* Pagination */
+/* Pagination Wrapper */
 .custom-pagination {
     margin: 0;
-    gap: 5px;
+    padding: 0;
+    list-style: none;
     display: flex;
     align-items: center;
+    gap: 8px;
+    flex-wrap: wrap; /* INI PENTING UNTUK HP: Kalau kepanjangan, tombolnya otomatis turun ke baris baru */
+    justify-content: center; /* Pastikan posisinya di tengah */
 }
 
+/* Base style untuk semua tombol */
 .custom-pagination .page-link {
-    border: 1px solid #e5e7eb;
+    border: none; /* Hilangkan kotak border bawaan */
     color: #6b7280;
-    padding: 8px 14px;
-    margin: 0;
-    border-radius: 6px;
+    width: 32px; /* Lebar dan tinggi harus sama agar bulat sempurna */
+    height: 32px;
+    border-radius: 50% !important; /* BIKIN JADI BULAT */
     font-size: 13px;
-    font-weight: 400;
-    background-color: #fff;
-    font-family: "Poppins", sans-serif;
-    min-width: 38px;
-    height: 38px;
-    text-align: center;
+    font-weight: 500;
+    background-color: transparent;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 0;
+    text-decoration: none;
+    transition: all 0.2s;
 }
 
-.custom-pagination .page-item.active .page-link {
-    background-color: #40723f;
-    border-color: #40723f;
-    color: white;
+/* Khusus tombol panah (Prev/Next) pakai background putih bundar */
+.custom-pagination .page-item:first-child .page-link,
+.custom-pagination .page-item:last-child .page-link {
+    background-color: #fff;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
+/* Saat Hover (Disentuh Mouse) */
 .custom-pagination .page-link:hover {
-    background-color: #f9fafb;
-    border-color: #d1d5db;
+    background-color: #e5e7eb;
     color: #374151;
 }
 
+/* Tombol Aktif (Warna Hijau) */
+.custom-pagination .page-item.active .page-link {
+    background-color: #007000; /* Warna hijau gelap menyesuaikan referensimu */
+    color: white;
+    font-weight: bold;
+}
+
+/* Tombol Mati (Disabled) */
 .custom-pagination .page-item.disabled .page-link {
-    background-color: #f9fafb;
-    border-color: #e5e7eb;
+    background-color: transparent;
+    border-color: transparent;
     color: #d1d5db;
+    box-shadow: none;
 }
-
-.custom-pagination .page-item {
-    margin: 0 2px;
-}
-
 /* section detail */
 .detail-container {
     background-color: #fff;
@@ -1200,9 +1211,13 @@ body {
     }
 
     .table-footer {
-        flex-direction: column;
+        display: flex;
+        justify-content: space-between;
         align-items: center;
-        gap: 15px;
+        padding-top: 20px;
+        margin-top: 10px;
+        border-top: 1px solid #f1f1f1;
+        width: 100%;
     }
 
     .pagination-info {

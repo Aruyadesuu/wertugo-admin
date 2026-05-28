@@ -2,24 +2,40 @@
 
 namespace App\View\Components;
 
-use Closure;
-use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
 class DataTable extends Component
 {
-    /**
-     * Create a new component instance.
-     */
-    public function __construct()
-    {
-        //
+    public $title;
+    public $headers;
+    public $addButton;
+    public $exportButton;
+    public $exportRoute;
+    public $addRoute;
+    public $filterOptions;
+    public $data; // <- INI KUNCI AGAR DATA TIDAK HILANG
+
+    public function __construct(
+        $title = 'Data Table', 
+        $headers = [], 
+        $addButton = true, 
+        $exportButton = false, 
+        $exportRoute = null, 
+        $addRoute = '#',
+        $filterOptions = [], 
+        $data = null
+    ) {
+        $this->title = $title;
+        $this->headers = $headers;
+        $this->addButton = $addButton;
+        $this->exportButton = $exportButton;
+        $this->exportRoute = $exportRoute;
+        $this->addRoute = $addRoute;
+        $this->filterOptions = $filterOptions;
+        $this->data = $data;
     }
 
-    /**
-     * Get the view / contents that represent the component.
-     */
-    public function render(): View|Closure|string
+    public function render()
     {
         return view('components.data-table');
     }

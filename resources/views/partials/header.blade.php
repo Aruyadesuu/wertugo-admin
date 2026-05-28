@@ -1,5 +1,5 @@
 <!-- Header Admin -->
-@props(['header' => ''])
+
 
 <div class="topbar">
 
@@ -10,7 +10,7 @@
             <i class="bi bi-list"></i>
         </button>
 
-        <h4 class="m-0">{{ $header }}</h4>
+        <h4 class="m-0 text-success">@yield('header', 'Wertugo')</h4>
 
     </div>
 
