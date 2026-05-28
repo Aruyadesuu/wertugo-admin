@@ -17,12 +17,12 @@
 
     <nav class="nav flex-column">
 
-        <x-side-link href="/admin/dashboard" :active="request()->is('admin')">
+        <x-side-link href="/admin/" :active="request()->is('admin')">
             <i class="bi bi-pie-chart-fill"></i>
             <span>Dashboard</span>
         </x-side-link>
 
-        <x-side-link href="/admin/kamar" :active="request()->is('admin/kamar') || request()->is('admin/kamar-detail/*')">
+        <x-side-link href="/admin/users" :active="request()->is('admin/users') || request()->is('admin/kamar-detail/*')">
             <i class="bi bi-door-closed-fill"></i>
             <span>Daftar User</span>
         </x-side-link>

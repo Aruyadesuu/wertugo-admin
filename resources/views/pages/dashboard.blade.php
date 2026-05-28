@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', 'Dashboard')
 @section('admin-content')
 
 <div class="container my-3">
@@ -7,7 +8,7 @@
             <div class="card">
                 <div class="card-body">
                     <h1>Total User</h1>
-                    <p>180</p>
+                    <p>{{ $stats['total_user'] }}</p>
                 </div>
             </div>
         </div>
