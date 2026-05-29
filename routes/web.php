@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UmkmController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/admin', [DashboardController::class, 'index']);
 Route::get('/admin/users', [UserController::class, 'index'])->name('daftar-user');
+Route::get('/admin/umkm', [UmkmController::class, 'index'])->name('daftar-umkm');
 
 Route::get('/logout', function (){
     return view('logout');
