@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Pagination\LengthAwarePaginator; // Jangan lupa import ini!
+use Illuminate\Pagination\LengthAwarePaginator; 
+use Session;// Jangan lupa import ini!
 
 class UserController extends Controller
 {
@@ -13,10 +14,12 @@ class UserController extends Controller
         // 1. Tangkap halaman saat ini (default: 1)
         $page = $request->input('page', 1);
 
+        $token = Session::get('api_token');
+
         $url = env('WERTUGO_API').'/user/getusers';
         
         // 2. Kirim parameter page ke API
-        $response = Http::get($url, ['page' => $page]);
+        $response = Http::withToken($token)->get($url, ['page' => $page]);
 
         if ($response->successful()){
             $apiData = $response->json();

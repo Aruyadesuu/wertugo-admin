@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Http;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Session;
 
 class UmkmController extends Controller
 {
@@ -12,10 +13,12 @@ class UmkmController extends Controller
          // 1. Tangkap halaman saat ini (default: 1)
         $page = $request->input('page', 1);
 
+        $token = Session::get('api_token');
+
         $url = env('WERTUGO_API').'/umkm/getumkm';
         
         // 2. Kirim parameter page ke API
-        $response = Http::get($url, ['page' => $page]);
+        $response = Http::withToken($token)->get($url, ['page' => $page]);
 
         if ($response->successful()){
             $apiData = $response->json();
@@ -43,6 +46,11 @@ class UmkmController extends Controller
                 'tableHeaders' => ['Profil UMKM', 'Status Aktif', 'Status Verifikasi', 'Join Date', 'Aksi'],
                 'stats' => $stats // Saya ganti 'Action' ke 'Aksi' agar pas dengan Blade-mu
             ]);
+        }
+
+        if($response->status() === 401){
+            Session::flush();
+            return redirect('/login')->withErrors(['email' => 'Sesi telah Habis. Silahkan login ulang']);
         }
         
         return abort($response->status(), 'Gagal mengambil data dari server.');

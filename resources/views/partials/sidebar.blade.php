@@ -42,6 +42,13 @@
             <span>Report Notice</span>
         </x-side-link>
 
+        <form action="{{ route('logout') }}" method="POST" class="d-inline">
+            @csrf
+            <button type="submit" class="btn btn-outline-danger w-100 text-start">
+                <i class="bi bi-box-arrow-right me-2"></i> Logout
+            </button>
+        </form>
+
     </nav>
 
 </div>

@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use Http;
 use Illuminate\Http\Request;
+use Session;
 
 class DashboardController extends Controller
 {
     public function index(){
         $url = env('WERTUGO_API').'/admin/dashboard';
-        $response = Http::get($url);
+        $token = Session::get('api_token');
+        $response = Http::withToken($token)->get($url);
 
         $stats = [
             'total_user' => 0,
